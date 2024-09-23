@@ -1,0 +1,21 @@
+# Dependencias de Node.js
+node_modules/
+dist/
+
+# TypeScript
+*.tsbuildinfo
+
+# Logs y configuraciones locales
+logs/
+*.log
+.env
+
+# Archivos de configuración del editor (VSCode, JetBrains, etc.)
+.vscode/
+.idea/
+
+# Configuraciones de Git
+.git/
+
+# Archivos de cobertura de pruebas
+coverage/

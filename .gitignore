@@ -14,8 +14,5 @@ logs/
 .vscode/
 .idea/
 
-# Configuraciones de Git
-.git/
-
 # Archivos de cobertura de pruebas
 coverage/

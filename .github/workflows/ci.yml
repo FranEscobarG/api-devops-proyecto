@@ -1,0 +1,38 @@
+name: Node.js CI
+
+# Disparadores: En push y pull request en la rama 'main'
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  build:
+    # Define el ambiente donde se ejecutará la acción
+    runs-on: ubuntu-latest
+
+    # Estrategia: Ejecuta la acción en diferentes versiones de Node.js
+    strategy:
+      matrix:
+        node-version: [18.x]
+
+    # Pasos a seguir para cada trabajo
+    steps:
+      # 1. Clona el repositorio
+      - uses: actions/checkout@v2
+
+      # 2. Instala la versión de Node.js especificada en la estrategia
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v2
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      # 3. Instala dependencias
+      - run: npm install
+
+      # 4. Transpila TypeScript a JavaScript (compila)
+      - run: npm run build
+
+      # 5. Ejecuta las pruebas con Jest
+      - run: npm test

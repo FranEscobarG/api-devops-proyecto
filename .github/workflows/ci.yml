@@ -15,7 +15,7 @@ jobs:
     # Estrategia: Ejecuta la acción en diferentes versiones de Node.js
     strategy:
       matrix:
-        node-version: [18.x]
+        node-version: [16.x]
 
     # Pasos a seguir para cada trabajo
     steps:

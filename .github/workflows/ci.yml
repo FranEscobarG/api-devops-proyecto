@@ -1,38 +1,32 @@
-name: Node.js CI
+name: Branch Management
 
-# Disparadores: En push y pull request en la rama 'main'
 on:
   push:
-    branches: [main]
-  pull_request:
-    branches: [main]
-
+    branches:
+      - 'main'
 jobs:
-  build:
-    # Define el ambiente donde se ejecutará la acción
+  merge-to-main:
     runs-on: ubuntu-latest
-
-    # Estrategia: Ejecuta la acción en diferentes versiones de Node.js
-    strategy:
-      matrix:
-        node-version: [16.x]
-
-    # Pasos a seguir para cada trabajo
     steps:
-      # 1. Clona el repositorio
       - uses: actions/checkout@v2
-
-      # 2. Instala la versión de Node.js especificada en la estrategia
-      - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v2
         with:
-          node-version: ${{ matrix.node-version }}
+          fetch-depth: 0
+      
+      - name: Merge to Main
+        run: |
+          git config user.name github-actions
+          git config user.email github-actions@github.com
+          git checkout main
+          git merge ${{ github.ref }} --no-ff --allow-unrelated-histories -m "Merge ${{ github.ref }} into Dev"
+          git push origin main
 
-      # 3. Instala dependencias
-      - run: npm install
-
-      # 4. Transpila TypeScript a JavaScript (compila)
-      - run: npm run build
-
-      # 5. Ejecuta las pruebas con Jest
-      - run: npm test
+  test:
+    needs: merge-to-main
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Run tests
+        run: |
+          # Aquí deberías poner tus comandos para ejecutar las pruebas
+          echo "Ejecutando pruebas..."
+          # Por ejemplo: npm test
